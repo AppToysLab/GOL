@@ -131,7 +131,7 @@ export class GameManager {
         let arrRow: Cell[] = [];
         for (let j = 0; j < 10; j++)
           {
-            let life: boolean = false; // Boolean( Math.round(Math.random()));
+            let life: boolean = true; // Boolean( Math.round(Math.random()));
 
             arrRow[j] = new Cell(i, j, this.Row.id, life ); // creating array of the row
             arrRow[j].showCell();
@@ -139,11 +139,9 @@ export class GameManager {
         this.arrCells[i] = arrRow; // put down array of row into the cell of Main array
         
       }
-  //console.log(this.arrCells);
   }
-
   //
- public SetLifeStatus():  void {
+  SetLifeStatus():  void {
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
         let singleCell = this.arrCells[i][j];
@@ -154,7 +152,7 @@ export class GameManager {
         singleCell.myNeibSumm = neighborsLifes;
         singleCell.setMyLife();
         singleCell.reShowCell();
-        console.log('s = ' + neighborsLifes);
+      //  console.log('s = ' + neighborsLifes);
     }
   }
   }
@@ -173,7 +171,7 @@ export class GameManager {
        }
      }
      if (this.arrCells[row][col].myLifeStatus == true){
-        summ = summ - 1;
+        summ = summ - 1;// without by self
        }
     return (summ);
    }
