@@ -166,16 +166,16 @@ export class GameManager {
     let summ: number = 0;
     for (let i = row - 1; i <= row + 1; i++) {
        for (let j = col - 1; j <= col + 1; j++) {
-         console.log('row = ' + i + ' col = ' + j + ' ' + this.arrCells[i][j].myLifeStatus);
-      //   if ((i != row) && (j != col)) //exclueded for self ([i][j])
-         {
+    //     console.log('row = ' + i + ' col = ' + j + ' ' + this.arrCells[i][j].myLifeStatus);
            if (this.arrCells[i][j].myLifeStatus == true){
            summ += 1;
          }
-         }
        }
      }
-    return summ;
+     if (this.arrCells[row][col].myLifeStatus == true){
+        summ = summ - 1;
+       }
+    return (summ);
    }
 
 }
