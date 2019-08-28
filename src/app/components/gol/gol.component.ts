@@ -13,7 +13,7 @@ export class GOLComponent implements OnInit {
     
     this.gm = new GameManager();
     this.gm.CellGanerate();
-    //gm.SetLifeStatus();
+    //gm.SetLi;feStatus()
   }
   myFunc(){
     console.log("function called");
@@ -45,7 +45,8 @@ export class Cell {
        this.Col = document.createElement('div');
        this.Col.className = 'col-1';
        this.Col.style.cursor =  "pointer";
-       this.Col.addEventListener('click', b => {this.setAlive()});
+       this.Col.addEventListener('click', b => {this.setAlive()}); // myFunc()
+      
        this.Col.innerText = this.myCountI + '-' + this.myCountJ + ' Neib: ' + this.myNeibSumm + ' ' + this.myLifeStatus;
        if (this.myLifeStatus === true) {
         this.Col.style.backgroundColor = 'green';
@@ -87,7 +88,8 @@ export class Cell {
       }
       }
   }
-  setAlive(){
+  setAlive()//on Click
+  {
     this.myLifeStatus = true;
     this.Col.style.backgroundColor = 'green';
     this.Col.innerText = this.myCountI + '-' + this.myCountJ + ' Neib: ' + this.myNeibSumm + ' ' + this.myLifeStatus;
@@ -131,22 +133,21 @@ export class GameManager {
         let arrRow: Cell[] = [];
         for (let j = 0; j < 10; j++)
           {
-            let life: boolean = true; // Boolean( Math.round(Math.random()));
-
+            let life: boolean = false; // Cell's life status at the begining
             arrRow[j] = new Cell(i, j, this.Row.id, life ); // creating array of the row
             arrRow[j].showCell();
           }
         this.arrCells[i] = arrRow; // put down array of row into the cell of Main array
-        
       }
   }
   //
   SetLifeStatus():  void {
-    for (let i = 0; i < 9; i++) {
-      for (let j = 0; j < 9; j++) {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
         let singleCell = this.arrCells[i][j];
         let neighborsLifes: number;// = 0;
-        if ((i > 0) && (j > 0)) {
+      //  if ((i > 0) && (j > 0))
+       {
                   neighborsLifes =  this.SummNeighborsLifes(i, j);
                   }
         singleCell.myNeibSumm = neighborsLifes;
@@ -162,11 +163,14 @@ export class GameManager {
   //                                                       [ i + 1, j - 1 ]       [ i + 1, j ]      [ i + 1, j + 1 ]
   SummNeighborsLifes(row: number, col: number) {
     let summ: number = 0;
-    for (let i = row - 1; i <= row + 1; i++) {
+    
+      for (let i = row - 1; i <= row + 1; i++) {
        for (let j = col - 1; j <= col + 1; j++) {
     //     console.log('row = ' + i + ' col = ' + j + ' ' + this.arrCells[i][j].myLifeStatus);
-           if (this.arrCells[i][j].myLifeStatus == true){
+        if((i >= 0)&&(j >= 0)&&(i <= 9)&&(j <= 9)){ 
+          if (this.arrCells[i][j].myLifeStatus == true){
            summ += 1;
+          }
          }
        }
      }
