@@ -13,17 +13,20 @@ export class GOLComponent implements OnInit {
     
     this.gm = new GameManager();
     this.gm.CellGanerate();
-    //gm.SetLi;feStatus()
+    //gm.SetLifeStatus()
+
   }
   myFunc(){
     console.log("function called");
    this.gm.SetLifeStatus();
   }
+  
 }
 
 export class Cell {
   Col: HTMLDivElement;
-  
+  eventV = new Event('evCellClick', {bubbles: true, cancelable: false});
+
   globCountI: number;
   globCountJ: number;
     //
@@ -92,8 +95,9 @@ export class Cell {
   {
     this.myLifeStatus = true;
     this.Col.style.backgroundColor = 'green';
-    this.Col.innerText = this.myCountI + '-' + this.myCountJ + ' Neib: ' + this.myNeibSumm + ' ' + this.myLifeStatus;
-   // this.Col.addEventListener('click', c => {GameManager.SetLifeStatus()});
+    this.Col.innerText = this.myCountI + '-' + this.myCountJ +  '  ' + 'Neib: ' + '  ' +   this.myNeibSumm;
+    this.Col.dispatchEvent(this.eventV);
+    //this.eventV;
   }
 }
 
@@ -104,7 +108,11 @@ export class GameManager {
    rowChild: any;
    cR: any;
    bttnStart: any;
-
+  
+  reName(){
+    this.bttnStart.innerText = 'Hi From TS'; // visual void  for event's testing
+    console.log('reName is Run');
+  }
    //
   CellGanerate(): void {
   // ----- create col's
@@ -115,8 +123,9 @@ export class GameManager {
     let btn = document.getElementById ('btnStart');
   
     this.bttnStart.addEventListener('click', a => {
-      this.SetLifeStatus();
-    });
+      this.SetLifeStatus()});
+    this.bttnStart.addEventListener('eventV', b => {
+        this.reName()});// ------------------- --------------------Event's testing
     
     this.cont = document.createElement('div'); // creating single container for all rows
     this.cont.className = 'container-fluid';
@@ -153,6 +162,7 @@ export class GameManager {
         singleCell.myNeibSumm = neighborsLifes;
         singleCell.setMyLife();
         singleCell.reShowCell();
+        
       //  console.log('s = ' + neighborsLifes);
     }
   }
@@ -179,6 +189,7 @@ export class GameManager {
        }
     return (summ);
    }
+   
 
 }
 
