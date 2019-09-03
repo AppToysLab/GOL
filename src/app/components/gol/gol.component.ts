@@ -46,6 +46,7 @@ export class Cell {
        this.Col.className = 'col-1';
        this.Col.style.cursor =  "pointer";
        this.Col.addEventListener('click', b => {this.setAlive()}); 
+       //                                           // ---- EVENT --------- EVENT --------- EVENT --------- EVENT -----
        document.addEventListener('evReborn', b => {
         this.setMyLife}); 
 
@@ -94,7 +95,7 @@ export class Cell {
   
   setAlive()//on Click
   {
-    this.Col.dispatchEvent(this.eventV);// -------------- we are ringing all the bells by own EVENT
+    this.Col.dispatchEvent(this.eventV);// -- we are ringing all the bells by own EVENT// ---- EVENT --------- EVENT
     this.myLifeStatus = true;
     this.Col.style.backgroundColor = 'green';
   //  this.Col.innerText = this.myCountI + '-' + this.myCountJ +  '  ' + 'Neib: ' + '  ' +   this.myNeibSumm;
@@ -172,7 +173,7 @@ export class GameManager {
   }
 }
   
- this.bttnStart.dispatchEvent(this.eventReborn);
+ document.dispatchEvent(this.eventReborn);// ---- EVENT --------- EVENT --------- EVENT --------- EVENT -----
   }
 
 
@@ -197,7 +198,6 @@ export class GameManager {
     }
     if (this.arrCells[row][col].myLifeStatus == true){
       summ = summ - 1;// without by self
-      
     }
     return summ;
    }
