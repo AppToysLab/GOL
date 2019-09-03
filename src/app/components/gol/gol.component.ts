@@ -48,9 +48,9 @@ export class Cell {
        this.Col.addEventListener('click', b => {this.setAlive()}); 
        //                                          // ---- EVENT --------- EVENT --------- EVENT --------- EVENT -----
        document.addEventListener('evReborn', b => {
-        this.setMyLife()}); 
-       document.addEventListener('evReborn', b => {
-        this.reShowCell()});
+        this.setMyLife();
+        this.reShowCell(); 
+      }); 
 
       
     //   this.Col.innerText = this.myCountI + '-' + this.myCountJ + ' Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
@@ -92,7 +92,6 @@ export class Cell {
         this.myLifeStatus = true;
         }
       }
-    //  console.log('setMyLife is Run')
   }
   
   setAlive()//on Click
@@ -151,7 +150,7 @@ export class GameManager {
         for (let j = 0; j < 10; j++)
           {
            let randomLife = Boolean( Math.round( Math.random())); // every single Cell's life status at the begining
-          //  randomLife = false; 
+            randomLife = false; 
             arrRow[j] = new Cell(i, j, this.Row.id, randomLife ); // creating array of the row
             arrRow[j].showCell();
           }
@@ -166,39 +165,34 @@ export class GameManager {
   //    this.arrCells[i][j].setMyLife();
    //   this.arrCells[i][j].reShowCell();
     }
-    for (let i = 0; i < 20; i++) {
-      for (let j = 0; j < 10; j++) {
-   //  this.arrCells[i][j].setMyLife();
-   //  this.arrCells[i][j].reShowCell();
-    }
-  }
 }
  document.dispatchEvent(this.eventReborn);// ---- EVENT --------- EVENT 
   }
 
-
-  
   // length
  // collecting statuses of neighbors lifes                 [ i - 1, j - 1 ]       [ i - 1, j ]      [ i - 1, j + 1 ]
   //                                                         [ i, j - 1 ]           [ i, j ]          [ i, j + 1 ]  
   //                                                       [ i + 1, j - 1 ]       [ i + 1, j ]      [ i + 1, j + 1 ]
   SummNeighborsLifes (row: number, col: number) {
     let summ: number = 0;
-    for (let i = row - 1; i < row + 1; i++) {
-      for (let j = col - 1; j < col + 1; j++) {
+    for (let i = row - 1; i <= row + 1; i++) {
+      for (let j = col - 1; j <= col + 1; j++) {
         if((i >= 0) && (j >= 0) && (i <= 19) && (j <= 9))
         { 
          if (this.arrCells[i][j].myLifeStatus == true)
          {
           summ += 1;
-          // console.log('after ' + summ);
+          //console.log('after ' + summ);
          }
         }
       }
+
     }
     if (this.arrCells[row][col].myLifeStatus == true){
       summ = summ - 1;// without by self
+
     }
+    console.log(row + '-' + col + '   after ' + summ);
     return summ;
    }
 }
