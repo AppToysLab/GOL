@@ -23,7 +23,7 @@ export class GOLComponent implements OnInit {
 export class Cell {
   Col: HTMLDivElement;
   eventV = new Event('evCellClick', {bubbles: true}); // own EVENT for call SetLifeStatus() at the Cell by onClick
- // eventReborn = new Event('evReborn', {bubbles: true}); // waiting for the ending of checking neighbores summ
+  eventReborn = new Event('evReborn', {bubbles: true}); // waiting for the ending of checking neighbores summ
   
 
 
@@ -46,9 +46,11 @@ export class Cell {
        this.Col.className = 'col-1';
        this.Col.style.cursor =  "pointer";
        this.Col.addEventListener('click', b => {this.setAlive()}); 
-       //                                           // ---- EVENT --------- EVENT --------- EVENT --------- EVENT -----
+       //                                          // ---- EVENT --------- EVENT --------- EVENT --------- EVENT -----
        document.addEventListener('evReborn', b => {
-        this.setMyLife}); 
+        this.setMyLife()}); 
+       document.addEventListener('evReborn', b => {
+        this.reShowCell()});
 
       
     //   this.Col.innerText = this.myCountI + '-' + this.myCountJ + ' Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
@@ -90,17 +92,16 @@ export class Cell {
         this.myLifeStatus = true;
         }
       }
-      console.log('setMyLife is Run')
+    //  console.log('setMyLife is Run')
   }
   
   setAlive()//on Click
   {
-    this.Col.dispatchEvent(this.eventV);// -- we are ringing all the bells by own EVENT// ---- EVENT --------- EVENT
+   // this.Col.dispatchEvent(this.eventV);// -- we are ringing all the bells by own EVENT// ---- EVENT --------- EVENT
     this.myLifeStatus = true;
     this.Col.style.backgroundColor = 'green';
   //  this.Col.innerText = this.myCountI + '-' + this.myCountJ +  '  ' + 'Neib: ' + '  ' +   this.myNeibSumm;
     this.Col.innerText = 'Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
-    
   }
 }
 
@@ -172,8 +173,7 @@ export class GameManager {
     }
   }
 }
-  
- document.dispatchEvent(this.eventReborn);// ---- EVENT --------- EVENT --------- EVENT --------- EVENT -----
+ document.dispatchEvent(this.eventReborn);// ---- EVENT --------- EVENT 
   }
 
 
