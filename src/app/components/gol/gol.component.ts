@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Cell } from './Cell';
 
 @Component({
   selector: 'app-gol',
@@ -20,90 +21,6 @@ export class GOLComponent implements OnInit {
  // }
 }
 
-export class Cell {
-  Col: HTMLDivElement;
-  eventV = new Event('evCellClick', {bubbles: true}); // own EVENT for call SetLifeStatus() at the Cell by onClick
-  eventReborn = new Event('evReborn', {bubbles: true}); // waiting for the ending of checking neighbores summ
-  
-
-
-  myCountI: number; // value Row from CellGenerate()
-  myCountJ: number; // value Col
-    //
-  rowId: string;
-  myLifeStatus: boolean; // local value takes from CellGenerate() by random
-  myNeibSumm: number;
-    constructor (globCountI: number, globCountJ: number, yyy: string, globLifeStatus: boolean) {
-      this.myCountI = globCountI;
-      this.myCountJ = globCountJ;
-      this.rowId = yyy;
-      this.myLifeStatus = globLifeStatus;
-      this.myNeibSumm = 0;
-    }
-
-  showCell(): void{
-       this.Col = document.createElement('div');
-       this.Col.className = 'col-1';
-       this.Col.style.cursor =  "pointer";
-       this.Col.addEventListener('click', b => {this.setAlive()}); 
-       //                                          // ---- EVENT --------- EVENT --------- EVENT --------- EVENT -----
-       document.addEventListener('evReborn', b => {
-        this.setMyLife();
-        this.reShowCell(); 
-      }); 
-
-      
-    //   this.Col.innerText = this.myCountI + '-' + this.myCountJ + ' Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
-        this.Col.innerText = 'Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
-       if (this.myLifeStatus == true) {
-        this.Col.style.backgroundColor = 'green';
-       }
-        else {
-       this.Col.style.backgroundColor = 'yellow';
-       }
-       let tTT = document.getElementById( this.rowId );
-       tTT.appendChild(this.Col);
-      }
-
-  reShowCell() {
-    this.Col.innerText = 'Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
-    this.Col.style.color = 'white'; // white font - as a sign of reShowCell method 
-    if (this.myLifeStatus == true) {
-      this.Col.style.backgroundColor = 'green';
-     }
-    if (this.myLifeStatus == false) {
-      this.Col.style.backgroundColor = 'yellow';
-     }
-  }
-
-  setMyLife() {
-    if (this.myLifeStatus == true) {
-      if (this.myNeibSumm < 2) {
-        this.myLifeStatus = false;
-      }
-      if (this.myNeibSumm > 3) {
-        this.myLifeStatus = false;
-      }
-    }
-    else { 
-      
-      if(this.myNeibSumm == 3) 
-        {
-        this.myLifeStatus = true;
-        }
-      }
-  }
-  
-  setAlive()//on Click
-  {
-   // this.Col.dispatchEvent(this.eventV);// -- we are ringing all the bells by own EVENT// ---- EVENT --------- EVENT
-    this.myLifeStatus = true;
-    this.Col.style.backgroundColor = 'green';
-  //  this.Col.innerText = this.myCountI + '-' + this.myCountJ +  '  ' + 'Neib: ' + '  ' +   this.myNeibSumm;
-    this.Col.innerText = 'Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
-  }
-}
-
 export class GameManager {
    arrCells: Array<Cell[]> = []; // Main array.  creating array, wich contained another arrays like rows (or cols)
    Row: HTMLDivElement;
@@ -111,10 +28,11 @@ export class GameManager {
    rowChild: any;
    cR: any;
    bttnStart: any;
+   bttnStop: any;
    eventReborn = new Event('evReborn', {bubbles: true}); // waiting for the ending of checking neighbores summ
 
   reName(){
-    this.bttnStart.innerText = 'From TS on Event'; // visual effect  for event's testing
+   // this.bttnStart.innerText = 'From TS on Event'; // visual effect  for event's testing
     this.bttnStart.style.backgroundColor = 'orange'; // another visual effect  for event's testing
     this.bttnStart.style.color = 'brown'; //one more  visual effect  for event's testing
     console.log('reName() is Run');
@@ -124,10 +42,23 @@ export class GameManager {
   // ----- create col's
     this.bttnStart = document.createElement('button');
     this.bttnStart.classname = ' btn-primary ';
-    this.bttnStart.innerText = 'From TS';
+    this.bttnStart.style.backgroundColor = 'orange';
+    this.bttnStart.innerText = 'Start';
     this.bttnStart.id = 'btnStart';
-    this.bttnStart.addEventListener('click', a => {
-      this.SetLifeStatus()});
+
+    let startStream; // = setInterval(() => this.SetLifeStatus(), 1000);
+    //this.startStream = setInterval(() => this.SetLifeStatus(), 1000);
+  //  this.bttnStart.addEventListener('click', a => {
+  //    this.SetLifeStatus()}); 
+      this.bttnStart.addEventListener('click', a => {
+        startStream = setInterval(() => this.SetLifeStatus(), 1000);}); // -------  stream --------- stream ---
+
+    this.bttnStop = document.createElement('button');
+    this.bttnStop.innerText = 'Stop';// clearInterval
+    this.bttnStop.style.backgroundColor = 'blue';
+    this.bttnStop.addEventListener('click', a => {
+      clearInterval(startStream)});
+
     document.addEventListener('evCellClick', b => {
         this.reName()});// ------------------- -------------------- Event's testing
     document.addEventListener('evCellClick', b => {
@@ -138,7 +69,8 @@ export class GameManager {
     this.cont.className = 'container-fluid';
     let findBasic = document.getElementById ('basic'); // pre-created div by HTML code
     findBasic.insertAdjacentElement ( "afterend" , this.cont);
-    findBasic.insertAdjacentElement ( "beforebegin" , this.bttnStart);// adding the button
+    findBasic.insertAdjacentElement ( "beforebegin" , this.bttnStart); // adding the button
+    findBasic.insertAdjacentElement('beforebegin', this.bttnStop);
 // ---------------------------------------------------------------------------------------
     for (let i = 0; i < 20; i++) {
         this.Row = document.createElement('div'); // creating of row
@@ -156,19 +88,19 @@ export class GameManager {
           }
         this.arrCells[i] = arrRow; // put down array of row into the cell of Main array
       }
+
+      
   }
   //
   SetLifeStatus():  void {
     for (let i = 0; i < 20; i++) {
       for (let j = 0; j < 10; j++) {
         this.arrCells[i][j].myNeibSumm = this.SummNeighborsLifes(i, j);// runing  void of checking neighbors lives for this one cell
-  //    this.arrCells[i][j].setMyLife();
-   //   this.arrCells[i][j].reShowCell();
     }
 }
  document.dispatchEvent(this.eventReborn);// ---- EVENT --------- EVENT 
   }
-
+  
   // length
  // collecting statuses of neighbors lifes                 [ i - 1, j - 1 ]       [ i - 1, j ]      [ i - 1, j + 1 ]
   //                                                         [ i, j - 1 ]           [ i, j ]          [ i, j + 1 ]  
