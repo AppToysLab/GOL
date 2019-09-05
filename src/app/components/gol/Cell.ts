@@ -26,6 +26,10 @@ export class Cell {
           this.setMyLife();
           this.reShowCell(); 
         }); 
+        document.addEventListener('evClear', c => {
+          this.reShowCell(); 
+        }); 
+        
   
         
       //   this.Col.innerText = this.myCountI + '-' + this.myCountJ + ' Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;

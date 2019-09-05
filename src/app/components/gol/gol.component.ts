@@ -29,7 +29,9 @@ export class GameManager {
    cR: any;
    bttnStart: any;
    bttnStop: any;
+   bttnClear: any;
    eventReborn = new Event('evReborn', {bubbles: true}); // waiting for the ending of checking neighbores summ
+    eventClear = new Event('evClear', {bubbles: true});
 
   reName(){
    // this.bttnStart.innerText = 'From TS on Event'; // visual effect  for event's testing
@@ -46,6 +48,7 @@ export class GameManager {
     this.bttnStart.innerText = 'Start';
     this.bttnStart.id = 'btnStart';
 
+    
     let startStream; // = setInterval(() => this.SetLifeStatus(), 1000);
     //this.startStream = setInterval(() => this.SetLifeStatus(), 1000);
   //  this.bttnStart.addEventListener('click', a => {
@@ -59,6 +62,13 @@ export class GameManager {
     this.bttnStop.addEventListener('click', a => {
       clearInterval(startStream)});
 
+    this.bttnClear = document.createElement('button');// ClearLifeStatus()
+    this.bttnClear.innerText ='Clear';
+    this.bttnClear.style.backgroundColor = 'red';
+    this.bttnClear.style.color = 'white';
+    this.bttnClear.addEventListener('click', a => {
+          this.ClearLifeStatus(); }); 
+
     document.addEventListener('evCellClick', b => {
         this.reName()});// ------------------- -------------------- Event's testing
     document.addEventListener('evCellClick', b => {
@@ -71,6 +81,7 @@ export class GameManager {
     findBasic.insertAdjacentElement ( "afterend" , this.cont);
     findBasic.insertAdjacentElement ( "beforebegin" , this.bttnStart); // adding the button
     findBasic.insertAdjacentElement('beforebegin', this.bttnStop);
+    findBasic.insertAdjacentElement('beforebegin', this.bttnClear);
 // ---------------------------------------------------------------------------------------
     for (let i = 0; i < 20; i++) {
         this.Row = document.createElement('div'); // creating of row
@@ -88,17 +99,24 @@ export class GameManager {
           }
         this.arrCells[i] = arrRow; // put down array of row into the cell of Main array
       }
-
-      
   }
   //
   SetLifeStatus():  void {
     for (let i = 0; i < 20; i++) {
       for (let j = 0; j < 10; j++) {
         this.arrCells[i][j].myNeibSumm = this.SummNeighborsLifes(i, j);// runing  void of checking neighbors lives for this one cell
-    }
-}
+     }
+  }
  document.dispatchEvent(this.eventReborn);// ---- EVENT --------- EVENT 
+  }
+
+  ClearLifeStatus():  void {
+    for (let i = 0; i < 20; i++) {
+      for (let j = 0; j < 10; j++) {
+        this.arrCells[i][j].myLifeStatus = false;// runing  void of checking neighbors lives for this one cell
+    }
+  }
+ document.dispatchEvent(this.eventClear);// ---- EVENT --------- EVENT 
   }
   
   // length
@@ -107,19 +125,59 @@ export class GameManager {
   //                                                       [ i + 1, j - 1 ]       [ i + 1, j ]      [ i + 1, j + 1 ]
   SummNeighborsLifes (row: number, col: number) {
     let summ: number = 0;
-    for (let i = row - 1; i <= row + 1; i++) {
-      for (let j = col - 1; j <= col + 1; j++) {
-        if((i >= 0) && (j >= 0) && (i <= 19) && (j <= 9))
-        { 
-         if (this.arrCells[i][j].myLifeStatus == true)
-         {
-          summ += 1;
-          //console.log('after ' + summ);
-         }
+    if (col != 9 && col != 0)
+    {
+      for (let i = row - 1; i <= row + 1; i++) {
+        for (let j = col - 1; j <= col + 1; j++) {
+          if((i >= 0) && (j > 0) && (i <= 19) && (j < 9))// j <= 9
+          { 
+          if (this.arrCells[i][j].myLifeStatus == true)
+          {
+            summ += 1;
+          }
+          }
         }
       }
-
     }
+    if (col == 9)
+    {
+      for (let i = row - 1; i <= row + 1; i++) {
+        for (let j = col - 1; j <= col; j++) {
+          if((i >= 0) && (i <= 19) )
+          { 
+            if (this.arrCells[i][j].myLifeStatus == true)
+              {
+                summ += 1;
+              }
+            if (this.arrCells[i][0].myLifeStatus == true)
+              {
+                summ += 1;
+              }
+          }
+        }
+        
+      }
+    }
+    if (col == 0)
+    {
+      for (let i = row - 1; i <= row + 1; i++) {
+        for (let j = col; j <= col + 1; j++) {
+          if((i >= 0) && (i <= 19) )
+          { 
+            if (this.arrCells[i][j].myLifeStatus == true)
+              {
+                summ += 1;
+              }
+            if (this.arrCells[i][9].myLifeStatus == true)
+              {
+                summ += 1;
+              }
+          }
+        }
+        
+      }
+    }
+
     if (this.arrCells[row][col].myLifeStatus == true){
       summ = summ - 1;// without by self
 
