@@ -51,10 +51,14 @@ export class GameManager {
     
     let startStream; // = setInterval(() => this.SetLifeStatus(), 1000);
     //this.startStream = setInterval(() => this.SetLifeStatus(), 1000);
-  //  this.bttnStart.addEventListener('click', a => {
-  //    this.SetLifeStatus()}); 
-      this.bttnStart.addEventListener('click', a => {
-        startStream = setInterval(() => this.SetLifeStatus(), 1000);}); // -------  stream --------- stream ---
+    this.bttnStart.addEventListener('click', a => {
+      this.SetLifeStatus()}); 
+      // this.bttnStart.addEventListener('click', a => {
+     //    startStream = setInterval(() => this.SetLifeStatus(), 400);}); // -------  stream --------- stream ---
+     
+     // this.bttnStart.addEventListener('click', a => {
+      //  this.SetLifeStatus();}); // -------  stream --------- stream ---
+
 
     this.bttnStop = document.createElement('button');
     this.bttnStop.innerText = 'Stop';// clearInterval
@@ -125,64 +129,274 @@ export class GameManager {
   //                                                       [ i + 1, j - 1 ]       [ i + 1, j ]      [ i + 1, j + 1 ]
   SummNeighborsLifes (row: number, col: number) {
     let summ: number = 0;
-    if (col != 9 && col != 0)
+    let neighbors: Cell[] = [];
+    if (col > 0 && col < 9 && row > 0 && row < 19 )
     {
       for (let i = row - 1; i <= row + 1; i++) {
         for (let j = col - 1; j <= col + 1; j++) {
-          if((i >= 0) && (j > 0) && (i <= 19) && (j < 9))// j <= 9
+          if((i >= 0) && (j >= 0) && (i <= 19) && (j <= 9))
           { 
-          if (this.arrCells[i][j].myLifeStatus == true)
-          {
-            summ += 1;
-          }
+           if(!neighbors.includes(this.arrCells[i][j])){
+            neighbors.push(this.arrCells[i][j]);
+           }
           }
         }
       }
     }
-    if (col == 9)
+    if (col == 9 && row > 0 && row < 19)//-------------------------------------
     {
+      summ = 0;
       for (let i = row - 1; i <= row + 1; i++) {
         for (let j = col - 1; j <= col; j++) {
           if((i >= 0) && (i <= 19) )
           { 
-            if (this.arrCells[i][j].myLifeStatus == true)
-              {
-                summ += 1;
-              }
-            if (this.arrCells[i][0].myLifeStatus == true)
-              {
-                summ += 1;
-              }
+            if(!neighbors.includes(this.arrCells[i][j])){
+              neighbors.push(this.arrCells[i][j]);
+             }
+            // if (this.arrCells[i][j].myLifeStatus == true)
+            //   {
+            //     summ += 1;
+            //   }
+            
           }
         }
-        
+        if((i >= 0) && (i <= 19) ){
+          if(!neighbors.includes(this.arrCells[i][0])){
+            neighbors.push(this.arrCells[i][0]);
+           }
+        }
       }
     }
-    if (col == 0)
+    if (col == 0 && row > 0 && row < 19)// --------------------------------------
     {
+      summ = 0;
       for (let i = row - 1; i <= row + 1; i++) {
         for (let j = col; j <= col + 1; j++) {
           if((i >= 0) && (i <= 19) )
           { 
-            if (this.arrCells[i][j].myLifeStatus == true)
-              {
-                summ += 1;
-              }
-            if (this.arrCells[i][9].myLifeStatus == true)
-              {
-                summ += 1;
-              }
+            if(!neighbors.includes(this.arrCells[i][j])){
+              neighbors.push(this.arrCells[i][j]);
+             }
           }
         }
-        
+        if((i >= 0) && (i <= 19) ){
+          if(!neighbors.includes(this.arrCells[i][9])){
+            neighbors.push(this.arrCells[i][9]);
+           }
+        }
       }
+    }
+ //----------------------------------------------------------------------------------------------   
+//-------------------------------- vert ------------------------
+    if (row == 0)
+    {
+      summ = 0;
+//------------------------------------------------------ step 1 ------------------------
+     if (col != 9 && col != 0)
+     {
+      for (let i = row ; i <= row + 1; i++) {
+        for (let j = col - 1; j <= col + 1; j++) {
+          if(j >= 0 && j <= 9 )
+          { 
+            if(!neighbors.includes(this.arrCells[i][j]))
+            {
+              neighbors.push(this.arrCells[i][j]);
+            }
+          }
+        }
+      }
+     }
+      //------------------------------------------------------ step 2 ------------------------
+      if (col != 9 && col != 0){
+        for (let j = col - 1; j <= col + 1; j++){
+              if(j >= 0 && j <= 9 ){
+                if(!neighbors.includes(this.arrCells[19][j]))
+                  {
+                  neighbors.push(this.arrCells[19][j]);
+                  }
+                }
+            }
+      }
+      if (col == 9)//------------------------------------------ col == 9 ----- step 1 ------------------------
+      {
+        for (let i = row ; i <= row + 1; i++) {
+          for (let j = col - 1; j <= col + 1; j++) {
+            if(j >= 0 && j <= 9 )
+            { 
+              if(!neighbors.includes(this.arrCells[i][j]))
+              {
+                neighbors.push(this.arrCells[i][j]);
+              }
+              if(!neighbors.includes(this.arrCells[i][10]))
+              {
+              this.arrCells[i][10] = this.arrCells[i][0];
+              neighbors.push(this.arrCells[i][10]);
+              }
+            }
+          }
+        }
+
+//------------------------------------------ col == 9 ----- step 2 ------------------------
+        for (let j = col - 1; j <= col ; j++){
+          
+          if (!neighbors.includes(this.arrCells[19][0]))
+            {
+              neighbors.push(this.arrCells[19][0]);
+            }
+          if(!neighbors.includes(this.arrCells[19][j]))
+            {
+              neighbors.push(this.arrCells[19][j]);
+            }
+        }
+    }
+
+    if (col == 0)//------------------------------------------ col == 0 ----- step 1 ------------------------
+    {
+      summ = 0;
+      for (let i = row ; i <= row + 1; i++) {
+        for (let j = col; j <= col + 1; j++) {
+          if(j >= 0 && j <= 9 )
+          { 
+            if(!neighbors.includes(this.arrCells[i][j]))
+            {
+              neighbors.push(this.arrCells[i][j]);
+            }
+            if(!neighbors.includes(this.arrCells[i][9]))
+            {
+              neighbors.push(this.arrCells[i][9]);
+            }
+          }
+        }
+      }
+      
+      for (let j = col ; j <= col + 1 ; j++)//-------------------------- col == 0 ----- step 2 -------------------
+      {
+        
+        if (!neighbors.includes(this.arrCells[19][9]))
+          {
+            neighbors.push(this.arrCells[19][9]);
+          }
+        if(!neighbors.includes(this.arrCells[19][j]))
+          {
+            neighbors.push(this.arrCells[19][j]);
+          }
+      }
+  }
+  }
+//--------------------------------------------------------------------------------------------
+if (row == 19)
+{
+  summ = 0;
+//------------------------------------------------------ step 1 ------------------------
+ if (col != 9 && col != 0)
+ {
+  for (let i = row - 1; i <= row; i++) {
+    for (let j = col - 1; j <= col + 1; j++) {
+      if(j >= 0 && j <= 9 )
+      { 
+        if(!neighbors.includes(this.arrCells[i][j]))
+        {
+          neighbors.push(this.arrCells[i][j]);
+        }
+      }
+    }
+  }
+ }
+  //------------------------------------------------------ step 2 ------------------------
+  if (col != 9 && col != 0){
+    for (let j = col - 1; j <= col + 1; j++){
+          if(j >= 0 && j <= 9 ){
+            if(!neighbors.includes(this.arrCells[0][j]))
+              {
+              neighbors.push(this.arrCells[0][j]);
+              }
+            }
+        }
+  }
+  if (col == 9)//------------------------------------------ col == 9 ----- step 1 ------------------------
+  {
+    for (let i = row - 1 ; i <= row; i++) {
+      for (let j = col - 1; j <= col + 1; j++) {
+        if(j >= 0 && j <= 9 )
+        { 
+          if(!neighbors.includes(this.arrCells[i][j]))
+          {
+            neighbors.push(this.arrCells[i][j]);
+          }
+          if(!neighbors.includes(this.arrCells[i][10]))
+          {
+          this.arrCells[i][10] = this.arrCells[i][0];
+          neighbors.push(this.arrCells[i][10]);
+          }
+        }
+      }
+    }
+
+//------------------------------------------ col == 9 ----- step 2 ------------------------
+    for (let j = col - 1; j <= col ; j++){
+      
+      if (!neighbors.includes(this.arrCells[0][0]))
+        {
+          neighbors.push(this.arrCells[0][0]);
+        }
+      if(!neighbors.includes(this.arrCells[0][j]))
+        {
+          neighbors.push(this.arrCells[0][j]);
+        }
+    }
+}
+
+if (col == 0)//------------------------------------------ col == 0 ----- step 1 ------------------------
+{
+  summ = 0;
+  for (let i = row -1; i <= row; i++) {
+    for (let j = col; j <= col + 1; j++) {
+      if(j >= 0 && j <= 9 )
+      { 
+        if(!neighbors.includes(this.arrCells[i][j]))
+        {
+          neighbors.push(this.arrCells[i][j]);
+        }
+        if(!neighbors.includes(this.arrCells[i][9]))
+        {
+          neighbors.push(this.arrCells[i][9]);
+        }
+      }
+    }
+  }
+  
+  for (let j = col ; j <= col + 1 ; j++)//-------------------------- col == 0 ----- step 2 -------------------
+  {
+    
+    if (!neighbors.includes(this.arrCells[0][9]))
+      {
+        neighbors.push(this.arrCells[0][9]);
+      }
+    if(!neighbors.includes(this.arrCells[0][j]))
+      {
+        neighbors.push(this.arrCells[0][j]);
+      }
+  }
+}
+}
+
+
+  //  ---------------------- counting SUMM --------------------------------
+    for (let i = 0; i < neighbors.length; i++) {
+      if ( neighbors[i].myLifeStatus){
+        summ += 1;
+      }
+      
+      
     }
 
     if (this.arrCells[row][col].myLifeStatus == true){
       summ = summ - 1;// without by self
-
     }
-    console.log(row + '-' + col + '   after ' + summ);
+     if (row == 19 && col == 0) {
+       console.log(row +' ' + col +' : ' + summ);
+       console.log(neighbors);
+     }
     return summ;
    }
 }

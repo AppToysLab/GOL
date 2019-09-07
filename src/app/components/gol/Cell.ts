@@ -20,6 +20,7 @@ export class Cell {
          this.Col = document.createElement('div');
          this.Col.className = 'col-1';
          this.Col.style.cursor =  "pointer";
+         this.Col.style.height = '50 px';
          this.Col.addEventListener('click', b => {this.setAlive()}); 
          //                                          // ---- EVENT --------- EVENT --------- EVENT --------- EVENT -----
          document.addEventListener('evReborn', b => {
