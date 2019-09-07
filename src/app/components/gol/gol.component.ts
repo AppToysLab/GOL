@@ -53,7 +53,7 @@ export class GameManager {
    // this.bttnStart.addEventListener('click', a => {
    //   this.SetLifeStatus()}); 
        this.bttnStart.addEventListener('click', a => {
-         startStream = setInterval(() => this.SetLifeStatus(), 400);}); // -------  stream --------- stream ---
+         startStream = setInterval(() => this.SetLifeStatus(), 200);}); // -------  stream --------- stream ---
      
      // this.bttnStart.addEventListener('click', a => {
       //  this.SetLifeStatus();}); // -------  stream --------- stream ---

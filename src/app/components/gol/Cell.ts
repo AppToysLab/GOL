@@ -20,7 +20,12 @@ export class Cell {
          this.Col = document.createElement('div');
          this.Col.className = 'col-1';
          this.Col.style.cursor =  "pointer";
-         this.Col.style.height = '50 px';
+
+         this.Col.style.height = '60px';
+         this.Col.style.width = '30px'
+         this.Col.style.borderColor = 'white';
+         this.Col.style.borderStyle = 'solid';
+         this.Col.style.borderWidth = '1px'
          this.Col.addEventListener('click', b => {this.setAlive()}); 
          //                                          // ---- EVENT --------- EVENT --------- EVENT --------- EVENT -----
          document.addEventListener('evReborn', b => {
@@ -34,9 +39,9 @@ export class Cell {
   
         
       //   this.Col.innerText = this.myCountI + '-' + this.myCountJ + ' Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
-          this.Col.innerText = 'Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
+       //   this.Col.innerText = 'Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
          if (this.myLifeStatus == true) {
-          this.Col.style.backgroundColor = 'green';
+          this.Col.style.backgroundColor = 'gray';
          }
           else {
          this.Col.style.backgroundColor = 'yellow';
@@ -46,10 +51,10 @@ export class Cell {
         }
   
     reShowCell() {
-      this.Col.innerText = 'Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
+     // this.Col.innerText = 'Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
       this.Col.style.color = 'white'; // white font - as a sign of reShowCell method 
       if (this.myLifeStatus == true) {
-        this.Col.style.backgroundColor = 'green';
+        this.Col.style.backgroundColor = 'gray';
        }
       if (this.myLifeStatus == false) {
         this.Col.style.backgroundColor = 'yellow';
@@ -78,8 +83,8 @@ export class Cell {
     {
      // this.Col.dispatchEvent(this.eventV);// -- we are ringing all the bells by own EVENT// ---- EVENT --------- EVENT
       this.myLifeStatus = true;
-      this.Col.style.backgroundColor = 'green';
-    //  this.Col.innerText = this.myCountI + '-' + this.myCountJ +  '  ' + 'Neib: ' + '  ' +   this.myNeibSumm;
-      this.Col.innerText = 'Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
+      this.Col.style.backgroundColor = 'gray';
+   //   this.Col.innerText = this.myCountI + '-' + this.myCountJ +  '  ' + 'Neib: ' + '  ' +   this.myNeibSumm;
+    //  this.Col.innerText = 'Neib: ' + this.myNeibSumm + '   ' + this.myLifeStatus;
     }
   }
